@@ -13,8 +13,8 @@ import javax.swing.JOptionPane;
 public class MyException extends Exception{
         
     
-    public MyException(){
-        
+    public MyException(String msg){
+         JOptionPane.showMessageDialog(null, msg);
     }
     
 

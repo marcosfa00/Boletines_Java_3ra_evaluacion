@@ -21,8 +21,8 @@ import java.sql.PreparedStatement;
  */
 public class Conexion {
   private Connection conexion = null;
-    String usuario="postgres";
-    String contrasenha="postgres";
+    String usuario="user1";
+    String contrasenha="user1";
     String db="basedatos"; 
     String host="localhost";
     String puerto="5434";
@@ -175,7 +175,7 @@ System.out.println("Esquema actual: " + currentSchema);
     
     
     
-    public void insertarDatosTabla(String dni, String nombre, String primerApellido, String segundoApellido, float nota1, float nota2, float nota3, float media) {
+    public void insertarDatosTabla(String dni, String nombre, String primerApellido, String segundoApellido, float nota1, float nota2, float nota3, float media) throws MyException {
     try {
         // Creamos un objeto de tipo PreparedStatement para construir la consulta parametrizada
         String query = "INSERT INTO schemaUser1.alumnosDAM (dni, nombre, primer_apellido, segundo_apellido, nota1, nota2, nota3, media) "
@@ -194,19 +194,20 @@ System.out.println("Esquema actual: " + currentSchema);
         
         // Ejecutamos la consulta
         preparedStatement.executeUpdate();
-        
-        JOptionPane.showMessageDialog(null, "Datos insertados correctamente");
+         JOptionPane.showMessageDialog(null, "Insercion realizada correctamente");
+       
     } catch (SQLException e) {
         e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error al insertar los datos");
+       
+         throw new MyException("Error al insertar los datos");
     }
 }
     
     
-    public void eliminarFila(String dni) {
+    public void eliminarFila(String dni) throws MyException {
     try {
         // Creamos la consulta SQL para eliminar la fila
-        String query = "DELETE FROM schemaUser1.alumnosDAM WHERE dni = ?";
+        String query = "DELETE FROM schemaUser1.alumnosDAM WHERE dni = ?"; //   /adhashd//df
         
         // Preparamos la sentencia SQL
         PreparedStatement statement = conexion.prepareStatement(query);
@@ -218,9 +219,11 @@ System.out.println("Esquema actual: " + currentSchema);
         int filasAfectadas = statement.executeUpdate();
         
         if (filasAfectadas > 0) {
-            System.out.println("La fila ha sido eliminada correctamente.");
+     
+           JOptionPane.showMessageDialog(null,"La fila ha sido eliminada correctamente.");
         } else {
-            System.out.println("No se encontró ninguna fila con el DNI especificado.");
+        
+            throw new MyException("No se encontró ninguna fila con el DNI especificado.");
         }
     } catch (SQLException e) {
         e.printStackTrace();
@@ -265,8 +268,98 @@ System.out.println("Esquema actual: " + currentSchema);
 
     
   
-    
-    
+    public void modificarDato(String dni, String nombre, String apellido1, String apellido2, Float nota1, Float nota2, Float nota3, Float media) throws MyException {
+    try {
+        // Creamos la consulta SQL para modificar la fila
+        String query = "UPDATE schemaUser1.alumnosDAM SET";
+        boolean algunaModificacion = false;
+        
+        // Verificar y agregar los campos a modificar en la consulta SQL
+        if (nombre != null) {
+            query += " nombre = ?,";
+            algunaModificacion = true;
+        }
+        if (apellido1 != null) {
+            query += " primer_apellido = ?,";
+            algunaModificacion = true;
+        }
+        if (apellido2 != null) {
+            query += " segundo_apellido = ?,";
+            algunaModificacion = true;
+        }
+        if (nota1 != null) {
+            query += " nota1 = ?,";
+            algunaModificacion = true;
+        }
+        if (nota2 != null) {
+            query += " nota2 = ?,";
+            algunaModificacion = true;
+        }
+        if (nota3 != null) {
+            query += " nota3 = ?,";
+            algunaModificacion = true;
+        }
+        if (media != null) {
+            query += " media = ?,";
+            algunaModificacion = true;
+        }
+        
+        // Verificar si se realizó alguna modificación
+        if (!algunaModificacion) {
+            System.out.println("No se especificaron campos para modificar.");
+            return;
+        }
+        
+        // Eliminar la última coma de la consulta SQL
+        query = query.substring(0, query.length() - 1);
+        
+        // Agregar la cláusula WHERE para el DNI
+        query += " WHERE dni = ?";
+        
+        // Preparamos la sentencia SQL
+        PreparedStatement statement = conexion.prepareStatement(query);
+        
+        // Establecer los valores de los parámetros
+        int parametroIndex = 1;
+        if (nombre != null) {
+            statement.setString(parametroIndex++, nombre);
+        }
+        if (apellido1 != null) {
+            statement.setString(parametroIndex++, apellido1);
+        }
+        if (apellido2 != null) {
+            statement.setString(parametroIndex++, apellido2);
+        }
+        if (nota1 != null) {
+            statement.setFloat(parametroIndex++, nota1);
+        }
+        if (nota2 != null) {
+            statement.setFloat(parametroIndex++, nota2);
+        }
+        if (nota3 != null) {
+            statement.setFloat(parametroIndex++, nota3);
+        }
+        if (media != null) {
+            statement.setFloat(parametroIndex++, media);
+        }
+        
+        // Establecer el valor del parámetro del DNI
+        statement.setString(parametroIndex, dni);
+        
+        // Ejecutar la sentencia SQL
+        int filasAfectadas = statement.executeUpdate();
+        
+        if (filasAfectadas > 0) {
+           JOptionPane.showMessageDialog(null,"La fila se ha modificado correctamente");
+        } else {
+            throw  new MyException("No se encontró ninguna fila con el DNI especificado");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("Error al modificar la fila: " );
+    }
+}
+
     
     
     

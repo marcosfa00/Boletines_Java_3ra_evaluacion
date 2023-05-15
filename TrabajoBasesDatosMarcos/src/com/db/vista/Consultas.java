@@ -2,9 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package trabajobasesdatosmarcos;
+package com.db.vista;
 
 import com.db.clases.Conexion;
+import com.db.clases.MyException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -20,6 +25,45 @@ public class Consultas extends javax.swing.JFrame {
         Conexion objConexion = new Conexion();
         objConexion.getConexion();
        
+        
+  
+
+// ...
+
+// Crear el objeto de escucha para la selección de fila de la tabla
+ListSelectionListener selectionListener = new ListSelectionListener() {
+    @Override
+    public void valueChanged(ListSelectionEvent event) {
+        // Verificar que la selección sea válida y no esté en proceso de cambio
+        if (!event.getValueIsAdjusting() && Tabla_datos.getSelectedRow() != -1) {
+            // Obtener el índice de la fila seleccionada
+            int selectedRow = Tabla_datos.getSelectedRow();
+
+            // Obtener los valores de la fila seleccionada
+            Object dni = Tabla_datos.getValueAt(selectedRow, 0);
+            Object nombre = Tabla_datos.getValueAt(selectedRow, 1);
+            Object primerApellido = Tabla_datos.getValueAt(selectedRow, 2);
+            Object segundoApellido = Tabla_datos.getValueAt(selectedRow, 3);
+            Object nota1 = Tabla_datos.getValueAt(selectedRow, 4);
+            Object nota2 = Tabla_datos.getValueAt(selectedRow, 5);
+            Object nota3 = Tabla_datos.getValueAt(selectedRow, 6);
+           
+
+            // Asignar los valores a los campos de texto correspondientes
+            txt_dni.setText(dni.toString());
+            txt_nombre.setText(nombre.toString());
+            txt_primerApellido.setText(primerApellido.toString());
+            txt_segundoApellido.setText(segundoApellido.toString());
+            txt_nota1.setText(nota1.toString());
+            txt_nota2.setText(nota2.toString());
+            txt_nota3.setText(nota3.toString());
+        }
+    }
+};
+
+// Asignar el objeto de escucha a la tabla
+Tabla_datos.getSelectionModel().addListSelectionListener(selectionListener);
+
         
         
         
@@ -52,9 +96,10 @@ public class Consultas extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txt_nota2 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        txtx_nota3 = new javax.swing.JTextField();
+        txt_nota3 = new javax.swing.JTextField();
         btn_borrar = new javax.swing.JButton();
         btn_modificar = new javax.swing.JButton();
+        btn_limpiar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -85,6 +130,7 @@ public class Consultas extends javax.swing.JFrame {
             }
         });
 
+        txt_dni.setMinimumSize(new java.awt.Dimension(100, 32));
         txt_dni.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_dniActionPerformed(evt);
@@ -122,6 +168,13 @@ public class Consultas extends javax.swing.JFrame {
             }
         });
 
+        btn_limpiar.setText("Limpiar");
+        btn_limpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_limpiarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -132,7 +185,7 @@ public class Consultas extends javax.swing.JFrame {
                         .addGap(11, 11, 11)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_dni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_dni, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -142,43 +195,40 @@ public class Consultas extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGap(6, 6, 6)
-                                    .addComponent(txt_nota1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txt_nota1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jLabel7)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(txt_nota2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_insert)
-                        .addGap(15, 15, 15))
+                        .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(txt_primerApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txt_segundoApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(58, 58, 58)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(txt_nota3, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(txt_primerApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txt_segundoApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(58, 58, 58)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(txtx_nota3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btn_borrar))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btn_modificar)
-                                        .addGap(8, 8, 8)))))
-                        .addContainerGap(48, Short.MAX_VALUE))))
+                            .addComponent(btn_borrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_limpiar)
+                            .addComponent(btn_insert)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(txt_nota2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,15 +236,15 @@ public class Consultas extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txt_dni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_dni, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
-                        .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel4)
-                        .addComponent(txt_primerApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_primerApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5)
-                        .addComponent(txt_segundoApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_segundoApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -204,21 +254,20 @@ public class Consultas extends javax.swing.JFrame {
                             .addComponent(jLabel7)
                             .addComponent(jLabel8)
                             .addComponent(jLabel9)))
-                    .addComponent(btn_modificar, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_insert)
-                        .addGap(17, 17, 17))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txt_nota1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_nota2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtx_nota3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_borrar))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btn_modificar)
+                        .addComponent(btn_limpiar)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_nota1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_nota2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_nota3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_borrar)
+                    .addComponent(btn_insert))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
+
+        txt_segundoApellido.getAccessibleContext().setAccessibleName("");
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel1.setText("INTRODUCIR DATOS:");
@@ -312,8 +361,17 @@ public class Consultas extends javax.swing.JFrame {
         // TODO add your handling code here:
         Conexion objConexion = new Conexion();
         objConexion.getConexion();
-        objConexion.insertarDatosTabla("39487577M", "Marcos", "Fdez", "Aven", 8.5f, 7.5f, 9.0f,9f);
-
+        float nota1 = Float.parseFloat( txt_nota1.getText());
+        float nota2 = Float.parseFloat(txt_nota2.getText());
+        float nota3 = Float.parseFloat(txt_nota3.getText());
+        float media = Math.round(nota1 + nota2 + nota3)/3;
+        try {
+            objConexion.insertarDatosTabla(txt_dni.getText(), txt_nombre.getText(), txt_primerApellido.getText(), txt_segundoApellido.getText(), nota1, nota2, nota3,media);
+        } catch (MyException ex) {
+            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         String nombreTabla = "alumnosDAM";
+        objConexion.mostrarDatosTabla(nombreTabla, Tabla_datos);
     }//GEN-LAST:event_btn_insertActionPerformed
 
     private void btn_mostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mostrarActionPerformed
@@ -330,7 +388,13 @@ public class Consultas extends javax.swing.JFrame {
         // TODO add your handling code here:
          Conexion objConexion = new Conexion();
         objConexion.getConexion();
-        objConexion.eliminarFila("39487578M");
+        try {
+            objConexion.eliminarFila(txt_dni.getText());
+        } catch (MyException ex) {
+            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         String nombreTabla = "alumnosDAM";
+        objConexion.mostrarDatosTabla(nombreTabla, Tabla_datos);
         
     }//GEN-LAST:event_btn_borrarActionPerformed
 
@@ -338,8 +402,51 @@ public class Consultas extends javax.swing.JFrame {
         // TODO add your handling code here:
         Conexion objConexion = new Conexion();
         objConexion.getConexion();
-        objConexion.modificarFila("39487578M", "Marcos", "Fdez", "Avendaño", 5, 7.5f, 9.0f,6f);
+        String nombreTabla = "alumnosDAM";
+         float nota1 = 0.0f;
+        float nota2 = 0.0f;
+        float nota3 = 0.0f;
+         
+         
+         try {
+    if (!txt_nota1.getText().isEmpty()) {
+        nota1 = Float.parseFloat(txt_nota1.getText());
+    }
+    if (!txt_nota2.getText().isEmpty()) {
+        nota2 = Float.parseFloat(txt_nota2.getText());
+    }
+    if (!txt_nota3.getText().isEmpty()) {
+        nota3 = Float.parseFloat(txt_nota3.getText());
+    }
+} catch (NumberFormatException e) {
+    // Manejar el error de conversión de números aquí
+    e.printStackTrace();
+    return;
+}
+         
+         float media = Math.round(nota1 + nota2 + nota3)/3;
+
+
+        try {
+            objConexion.modificarDato(txt_dni.getText(), txt_nombre.getText(), txt_primerApellido.getText(), txt_segundoApellido.getText(), nota1, nota2, nota3,media);
+        } catch (MyException ex) {
+           
+        }
+         
+        objConexion.mostrarDatosTabla(nombreTabla, Tabla_datos);
     }//GEN-LAST:event_btn_modificarActionPerformed
+
+    private void btn_limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_limpiarActionPerformed
+        // TODO add your handling code here:
+        txt_dni.setText("");
+        txt_nombre.setText("");
+        txt_primerApellido.setText("");
+        txt_segundoApellido.setText("");
+        txt_nota1.setText("");
+        txt_nota2.setText("");
+        txt_nota3.setText("");
+        
+    }//GEN-LAST:event_btn_limpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -380,6 +487,7 @@ public class Consultas extends javax.swing.JFrame {
     private javax.swing.JTable Tabla_datos;
     private javax.swing.JButton btn_borrar;
     private javax.swing.JButton btn_insert;
+    private javax.swing.JButton btn_limpiar;
     private javax.swing.JButton btn_modificar;
     private javax.swing.JButton btn_mostrar;
     private javax.swing.JLabel jLabel1;
@@ -400,8 +508,8 @@ public class Consultas extends javax.swing.JFrame {
     private javax.swing.JTextField txt_nombre;
     private javax.swing.JTextField txt_nota1;
     private javax.swing.JTextField txt_nota2;
+    private javax.swing.JTextField txt_nota3;
     private javax.swing.JTextField txt_primerApellido;
     private javax.swing.JTextField txt_segundoApellido;
-    private javax.swing.JTextField txtx_nota3;
     // End of variables declaration//GEN-END:variables
 }
